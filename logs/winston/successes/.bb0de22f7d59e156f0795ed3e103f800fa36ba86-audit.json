@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Fahim\\Projects\\nebraska\\logs\\winston\\successes\\.bb0de22f7d59e156f0795ed3e103f800fa36ba86-audit.json",
+    "files": [
+        {
+            "date": 1779250576624,
+            "name": "D:\\Fahim\\Projects\\nebraska\\logs\\winston\\successes\\sg-2026-05-20-10-success.log",
+            "hash": "68e3de9fdc5845e0dad0a4f075fde96044b4e286daa1b7612eba6c3bcfb6e79e"
+        }
+    ],
+    "hashType": "sha256"
+}

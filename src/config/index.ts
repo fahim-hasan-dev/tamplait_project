@@ -15,8 +15,7 @@ export default {
         jwt_expire_in: process.env.JWT_EXPIRE_IN,
         jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
         jwt_refresh_expire_in: process.env.JWT_REFRESH_EXPIRES_IN,
-        temp_jwt_secret: process.env.TEMP_JWT_SECRET,
-        temp_jwt_expire_in: process.env.TEMP_JWT_EXPIRE_IN,
+        temp_jwt_secret: process.env.TEMP_JWT_SECRET || process.env.JWT_SECRET
     },
     email: {
         from: process.env.EMAIL_FROM,

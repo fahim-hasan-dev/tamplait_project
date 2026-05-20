@@ -27,7 +27,6 @@ class QueryBuilder<T> {
     return this
   }
 
-  // Filtering
 // Filtering
 filter() {
   const queryObj = { ...this.query }
@@ -44,26 +43,6 @@ filter() {
   excludeFields.forEach(el => delete queryObj[el])
 
   const filters: Record<string, any> = cleanObject(queryObj)
-
-  // Handle salary range filtering
-  if (queryObj.minSalary || queryObj.maxSalary) {
-    if (queryObj.minSalary) {
-      filters.minSalary = { $gte: Number(queryObj.minSalary) }
-      delete queryObj.minSalary
-    }
-    if (queryObj.maxSalary) {
-      filters.maxSalary = { $lte: Number(queryObj.maxSalary) }
-      delete queryObj.maxSalary
-    }
-  }
-
-  // ✅ Add partial match for jobLocation
-  if (this.query.jobLocation) {
-    filters.jobLocation = {
-      $regex: this.query.jobLocation,
-      $options: 'i', // case-insensitive
-    }
-  }
 
   this.modelQuery = this.modelQuery.find(filters as FilterQuery<T>)
   return this

@@ -21,7 +21,6 @@ class QueryBuilder {
         return this;
     }
     // Filtering
-    // Filtering
     filter() {
         const queryObj = { ...this.query };
         const excludeFields = [
@@ -36,24 +35,6 @@ class QueryBuilder {
         ];
         excludeFields.forEach(el => delete queryObj[el]);
         const filters = cleanObject(queryObj);
-        // Handle salary range filtering
-        if (queryObj.minSalary || queryObj.maxSalary) {
-            if (queryObj.minSalary) {
-                filters.minSalary = { $gte: Number(queryObj.minSalary) };
-                delete queryObj.minSalary;
-            }
-            if (queryObj.maxSalary) {
-                filters.maxSalary = { $lte: Number(queryObj.maxSalary) };
-                delete queryObj.maxSalary;
-            }
-        }
-        // ✅ Add partial match for jobLocation
-        if (this.query.jobLocation) {
-            filters.jobLocation = {
-                $regex: this.query.jobLocation,
-                $options: 'i', // case-insensitive
-            };
-        }
         this.modelQuery = this.modelQuery.find(filters);
         return this;
     }

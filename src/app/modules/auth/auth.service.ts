@@ -7,7 +7,7 @@ import { AuthHelper } from './auth.helper'
 import {
   AuthCommonServices,
   authResponse,
-} from './common'
+} from './loginService'
 import { ILoginData } from '../../../interfaces/auth'
 import { emailTemplate } from '../../../shared/emailTemplate'
 import { emailHelper } from '../../../helpers/emailHelper'

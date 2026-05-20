@@ -11,6 +11,7 @@ const app_1 = __importDefault(require("./app"));
 const config_1 = __importDefault(require("./config"));
 const logger_1 = require("./shared/logger");
 const socketHelper_1 = require("./helpers/socketHelper");
+const DB_1 = require("./app/DB");
 process.on('uncaughtException', error => {
     logger_1.errorLogger.error('UnhandledException Detected', error);
     process.exit(1);
@@ -19,8 +20,10 @@ exports.onlineUsers = new Map();
 let server;
 async function main() {
     try {
-        mongoose_1.default.connect(config_1.default.database_url);
+        await mongoose_1.default.connect(config_1.default.database_url);
         logger_1.logger.info(colors_1.default.green('🚀 Database connected successfully'));
+        // Seed admin user
+        await (0, DB_1.seedAdmin)();
         const port = typeof config_1.default.port === 'number' ? config_1.default.port : Number(config_1.default.port);
         server = app_1.default.listen(port, config_1.default.ip_address, () => {
             logger_1.logger.info(colors_1.default.yellow(`♻️  Application listening on port:${config_1.default.port}`));

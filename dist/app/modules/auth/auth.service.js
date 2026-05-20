@@ -42,7 +42,7 @@ const user_model_1 = require("../user/user.model");
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const user_1 = require("../../../enum/user");
 const auth_helper_1 = require("./auth.helper");
-const common_1 = require("./common");
+const loginService_1 = require("./loginService");
 const emailTemplate_1 = require("../../../shared/emailTemplate");
 const emailHelper_1 = require("../../../helpers/emailHelper");
 const jwtHelper_1 = require("../../../helpers/jwtHelper");
@@ -128,7 +128,7 @@ const login = async (payload) => {
     if (!isUserExist) {
         throw new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, `No account found with this ${email ? 'email' : 'phone'}`);
     }
-    const result = await common_1.AuthCommonServices.handleLoginLogic(payload, isUserExist);
+    const result = await loginService_1.AuthCommonServices.handleLoginLogic(payload, isUserExist);
     return result;
 };
 const adminLogin = async (payload) => {
@@ -151,7 +151,7 @@ const adminLogin = async (payload) => {
     }
     // Create tokens
     const tokens = auth_helper_1.AuthHelper.createToken(isUserExist._id, isUserExist.role, `${isUserExist.firstName} ${isUserExist.lastName}`, isUserExist.email);
-    return (0, common_1.authResponse)(http_status_codes_1.StatusCodes.OK, `Welcome back ${isUserExist.firstName}`, isUserExist.role, tokens.accessToken, tokens.refreshToken);
+    return (0, loginService_1.authResponse)(http_status_codes_1.StatusCodes.OK, `Welcome back ${isUserExist.firstName}`, isUserExist.role, tokens.accessToken, tokens.refreshToken);
 };
 const forgetPassword = async (email, phone) => {
     const query = email
@@ -265,7 +265,7 @@ const verifyAccount = async (email, onetimeCode) => {
             email: isUserExist.email,
             image: isUserExist.image,
         };
-        return (0, common_1.authResponse)(http_status_codes_1.StatusCodes.OK, `Welcome ${isUserExist.firstName} ${isUserExist.lastName} to our platform.`, undefined, tokens.accessToken, tokens.refreshToken, undefined, userInfo);
+        return (0, loginService_1.authResponse)(http_status_codes_1.StatusCodes.OK, `Welcome ${isUserExist.firstName} ${isUserExist.lastName} to our platform.`, undefined, tokens.accessToken, tokens.refreshToken, undefined, userInfo);
     }
     else {
         await user_model_1.User.findByIdAndUpdate(isUserExist._id, {
@@ -289,7 +289,7 @@ const verifyAccount = async (email, onetimeCode) => {
         if (!token) {
             throw new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, ' please try again. or contact support.');
         }
-        return (0, common_1.authResponse)(http_status_codes_1.StatusCodes.OK, 'OTP verified successfully, please reset your password.', undefined, undefined, undefined, token.token);
+        return (0, loginService_1.authResponse)(http_status_codes_1.StatusCodes.OK, 'OTP verified successfully, please reset your password.', undefined, undefined, undefined, token.token);
     }
 };
 const getAccessToken = async (token) => {
