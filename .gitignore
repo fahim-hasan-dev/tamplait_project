@@ -1,7 +1,7 @@
 node_modules
 uploads
 .env
-/winston
+logs
 dist
 .idea/
 serviceAccountKey.json

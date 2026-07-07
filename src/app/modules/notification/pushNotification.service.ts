@@ -8,18 +8,28 @@ let isFirebaseInitialized = false;
 
 const initializeFirebase = () => {
     try {
-        let serviceAccountPath = path.join(process.cwd(), 'serviceAccountKey.json');
-
-        // Check if file exists, if not, try one level up
-        if (!require('fs').existsSync(serviceAccountPath)) {
-            serviceAccountPath = path.join(process.cwd(), '..', 'serviceAccountKey.json');
-        }
-
         if (admin.apps.length === 0) {
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccountPath),
-            });
-            logger.info('Firebase Admin initialized successfully using: ' + serviceAccountPath);
+            if (config.firebase_service_account_base64) {
+                const decodedServiceAccount = JSON.parse(
+                    Buffer.from(config.firebase_service_account_base64, 'base64').toString('utf-8')
+                );
+                admin.initializeApp({
+                    credential: admin.credential.cert(decodedServiceAccount),
+                });
+                logger.info('Firebase Admin initialized successfully using Base64 credentials.');
+            } else {
+                let serviceAccountPath = path.join(process.cwd(), 'serviceAccountKey.json');
+
+                // Check if file exists, if not, try one level up
+                if (!require('fs').existsSync(serviceAccountPath)) {
+                    serviceAccountPath = path.join(process.cwd(), '..', 'serviceAccountKey.json');
+                }
+
+                admin.initializeApp({
+                    credential: admin.credential.cert(serviceAccountPath),
+                });
+                logger.info('Firebase Admin initialized successfully using: ' + serviceAccountPath);
+            }
         }
 
         isFirebaseInitialized = true;
